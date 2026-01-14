@@ -78,16 +78,6 @@ function getAutoConfig() {
 
 const {nav, sidebar} = getAutoConfig()
 
-const copyright = `
-Copyright © 2025-present Gugle
-</p>
-陕ICP备2024046977号 | 
-<img style="width: 16px;display: inline-block" src="https://beian.mps.gov.cn/web/assets/logo01.6189a29f.png" class="w-full" alt="">
-<a href="https://beian.mps.gov.cn/#/query/webSearch?code=61072402000171" rel="noreferrer" target="_blank">
-陕公网安备61072402000171号
-</a>
-`
-
 export default defineConfig({
     title: "Gugle's Blog",
     description: "古镇天的个人博客",
@@ -98,10 +88,6 @@ export default defineConfig({
         sidebar,
         socialLinks: [
             {icon: 'github', link: 'https://github.com/Gu-ZT'}
-        ],
-        footer: {
-            message: 'Released under the CC BY-NC-SA 4.0 License.',
-            copyright
-        }
+        ]
     }
 })
