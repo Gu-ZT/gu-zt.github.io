@@ -1,7 +1,7 @@
 ---
 title: Minecraft资源包/数据包构建工具
 date: 2025-07-08
-tags: [Minecraft资源包构建, Minecraft数据包构建, 模块化架构, 版本适配系统, 前端构建引擎, GitHub集成, Zip打包, 社区协作]
+tags: [ Minecraft资源包构建, Minecraft数据包构建, 模块化架构, 版本适配系统, 前端构建引擎, GitHub集成, Zip打包, 社区协作 ]
 ---
 
 # Minecraft资源包/数据包构建工具
@@ -41,6 +41,26 @@ tags: [Minecraft资源包构建, Minecraft数据包构建, 模块化架构, 版�
 > Minecraft Resource Pack Building, Minecraft Data Pack Building, Modular Architecture, Version Adaptation System,
 > Front-end Build Engine, GitHub API Integration, JSZip Packaging, Abstract Factory Pattern,
 > Weight-based Module Merging, Community Collaboration
+
+## 体验
+
+- [主站](https://build.xekr.dev)
+- [镜像站](https://build.ztxy666.cn)
+
+### 仓库地址
+
+- [GitHub](https://github.com/XeKr-Dev/minecraft-pack-builder)
+
+### 体验项目
+
+- 模板仓库
+    - [[主站](https://build.xekr.dev/#/XeKr-Dev/minecraft-pack-template) | [镜像站](https://build.ztxy666.cn/#/XeKr-Dev/minecraft-pack-template)]
+- XeKr的合成增强
+    - [[主站](https://build.xekr.dev/#/XeKr-Dev/crafting-pro) | [镜像站](https://build.ztxy666.cn/#/XeKr-Dev/crafting-pro)]
+- XeKr的方纹资源包
+    - [[主站](https://build.xekr.dev/#/XeKr/Squareful) | [镜像站](https://build.ztxy666.cn/#/XeKr/Squareful)]
+- 森罗物语：装饰
+    - [[主站：装饰](https://build.xekr.dev/#/KaleidoscopeMods/KaleidoscopeDeco) | [镜像站：装饰](https://build.ztxy666.cn/#/KaleidoscopeMods/KaleidoscopeDeco)]
 
 ## 一、引言
 
@@ -257,7 +277,7 @@ class AbstractBuilder {
         if (file1.children === undefined || file2.children === undefined) {
             throw new Error("file1 or file2 is not a tree")
         }
-        const file: FileOrTree = { path: file2.path }
+        const file: FileOrTree = {path: file2.path}
         file.children = file1.children
         // 遍历file2的所有子节点
         for (let child of file2.children) {
@@ -326,7 +346,7 @@ class AbstractBuilder {
     public buildModZip(zip: JSZip) {
         const modID = this.config.pack_name.toLowerCase().replace(/[^a-z0-9]/g, '_')
         const license = this.config.license ?? 'All Right Reserved'
-        
+
         // Forge模组配置(lowcodefml加载器)
         const modsToml = `
 modLoader = "lowcodefml"
@@ -339,21 +359,21 @@ displayName = "${this.config.pack_name}"
 description = "${this.config.description}"
 logoFile = "pack.png"
 authors = "${this.config.author}"`
-        
+
         // NeoForge模组配置(javafml加载器)
         const neoForgeModsToml = `
 modLoader = "javafml"
 loaderVersion = "[1,)"
 ...`
-        
+
         // Fabric模组配置(依赖fabric-resource-loader-v0)
         const fabricModJson = {
             id: modID,
             version: this.config.version,
             environment: "*",
-            depends: { "fabric-resource-loader-v0": "*" }
+            depends: {"fabric-resource-loader-v0": "*"}
         }
-        
+
         // Quilt模组配置(依赖quilt_resource_loader)
         const quiltModJson = {
             quilt_loader: {
@@ -364,7 +384,7 @@ loaderVersion = "[1,)"
                 }]
             }
         }
-        
+
         // 写入文件
         zip.folder("META-INF")
         zip.file("META-INF/mods.toml", modsToml)
@@ -495,7 +515,7 @@ class RecipeFormatter {
         }
         return utob64(JSON.stringify(recipe, null, 4))
     }
-    
+
     // 转换链:任意格式→24w33a+→24w10a-24w33a→24w10a前
     // 保证任意版本间的兼容性转换
 }
@@ -517,16 +537,16 @@ export class GithubAPI {
         "https://gh-proxy.org/"
     ]
     public static readonly proxy: string = GithubAPI.proxies[Math.floor(Math.random() * GithubAPI.proxies.length)]
-    
+
     // 获取仓库信息
     static async getRepoInfo(repo: string, proxy: boolean = false)
-    
+
     // 获取仓库内容(文件/目录)
     static async getRepoContents(repo: string, path: string = "", proxy: boolean = false)
-    
+
     // 获取README文件
     static async getRepoReadme(repo: string, proxy: boolean = false)
-    
+
     // 下载仓库ZIP包(用于file_mode)
     static getRepoZip(repo: string, _branch: string = "", proxy: boolean = false)
 }
@@ -926,6 +946,7 @@ Promise.all(promises).then(() => {
     status.loaded = true
 })
 ```
+
 ```typescript
 // 场景2:并发获取所有模块文件树(AbstractBuilder第303-307行)
 const promises: Promise<any>[] = []
@@ -933,8 +954,10 @@ for (let module of moduleList) {
     const promise = this.getFileTree(module.path, proxy).then(tree => module.files = tree)
     promises.push(promise)
 }
-Promise.all(promises).then(() => { /* 合并处理 */ })
+Promise.all(promises).then(() => { /* 合并处理 */
+})
 ```
+
 ```typescript
 // 场景3:并发加载版本模块和图标(AbstractBuilder第371-383行)
 for (const versionModuleKey in versionModuleMap) {
