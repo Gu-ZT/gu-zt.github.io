@@ -6,6 +6,7 @@ import './style.css'
 import { ShikiMagicMove } from 'shiki-magic-move/vue'
 import 'shiki-magic-move/dist/style.css'
 import MagicCode from './components/MagicCode.vue'
+import MagicCodeGroup from './components/MagicCodeGroup.vue'
 import PostList from './components/PostList.vue'
 import CustomLayout from './theme/CustomLayout.vue'
 
@@ -15,6 +16,7 @@ export default {
   enhanceApp({ app, router, siteData }) {
     app.component('ShikiMagicMove', ShikiMagicMove)
     app.component('MagicCode', MagicCode)
+    app.component('MagicCodeGroup', MagicCodeGroup)
     app.component('PostList', PostList)
   }
 } satisfies Theme

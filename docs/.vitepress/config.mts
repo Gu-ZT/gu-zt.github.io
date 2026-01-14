@@ -1,5 +1,7 @@
 import {defineConfig} from 'vitepress'
 // @ts-ignore
+import container from 'markdown-it-container'
+// @ts-ignore
 import fs from 'node:fs'
 // @ts-ignore
 import path from 'node:path'
@@ -89,5 +91,46 @@ export default defineConfig({
         socialLinks: [
             {icon: 'github', link: 'https://github.com/Gu-ZT'}
         ]
+    },
+    markdown: {
+        lineNumbers: true,
+        config: (md) => {
+            md.use(container, 'magic', {
+                render(tokens: any[], idx: number) {
+                    if (tokens[idx].nesting === 1) {
+                        // 找到容器结束的索引
+                        const endIdx = tokens.slice(idx).findIndex(t => t.type === 'container_magic_close') + idx
+                        // 提取容器内部所有的代码块
+                        const codeBlocks = []
+
+                        for (let i = idx + 1; i < endIdx; i++) {
+                            if (tokens[i].type === 'fence') {
+                                const token = tokens[i]
+                                // 提取语言和文件名（例如 ```ts [index.ts]）
+                                const lang = token.info.split(' ')[0]
+                                const nameMatch = token.info.match(/\[(.*)\]/)
+                                const name = nameMatch ? nameMatch[1] : (lang || 'code')
+
+                                codeBlocks.push({
+                                    name,
+                                    lang,
+                                    code: token.content.trim()
+                                })
+
+                                // 关键：清空原本的代码块内容，防止它们被再次渲染
+                                tokens[i].type = 'html_block'
+                                tokens[i].content = ''
+                            }
+                        }
+
+                        // 将解析好的数据转为 JSON 字符串，作为 props 传给组件
+                        const filesJson = encodeURIComponent(JSON.stringify(codeBlocks))
+                        return `<MagicCodeGroup :files-data="'${filesJson}'">`
+                    } else {
+                        return '</MagicCodeGroup>'
+                    }
+                }
+            })
+        }
     }
 })
