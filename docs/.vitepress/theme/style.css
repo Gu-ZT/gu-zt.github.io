@@ -42,6 +42,15 @@
  * - `danger`: Used to show error, or dangerous message to the users. Used
  *   in custom container, badges, etc.
  * -------------------------------------------------------------------------- */
+:root {
+  --vp-sidebar-width: 290px;
+  --vp-layout-max-width: 1600px;
+}
+
+
+.VPDoc.has-aside .content-container {
+  max-width: 838px !important;
+}
 
 :root {
   --vp-c-default-1: var(--vp-c-gray-1);
