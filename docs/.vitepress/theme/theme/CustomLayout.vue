@@ -1,17 +1,19 @@
 <script setup>
-import DefaultTheme from 'vitepress/theme'
+import DefaultTheme, {useLayout} from 'vitepress/theme';
 
-const { Layout } = DefaultTheme
+const {Layout} = DefaultTheme;
+const {hasSidebar} = useLayout();
 </script>
 
 <template>
   <Layout>
-    <template #layout-bottom>
+    <template #layout-bottom v-if="!hasSidebar">
       <div class="custom-footer">
         <p>Released under the CC BY-NC-SA 4.0 License.</p>
         <p>Copyright © 2025-present Gugle</p>
         陕ICP备2024046977号 |
-        <img style="width: 16px;display: inline-block" src="https://beian.mps.gov.cn/web/assets/logo01.6189a29f.png" class="w-full" alt="">
+        <img style="width: 16px;display: inline-block" src="https://beian.mps.gov.cn/web/assets/logo01.6189a29f.png"
+             class="w-full" alt="">
         <a href="https://beian.mps.gov.cn/#/query/webSearch?code=61072402000171" rel="noreferrer" target="_blank">
           陕公网安备61072402000171号
         </a>
