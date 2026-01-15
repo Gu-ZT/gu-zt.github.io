@@ -97,8 +97,6 @@ export default defineConfig({
         config: (md) => {
             md.use(container, 'magic-code-group', {
                 render(tokens: any[], idx: number, options: any) {
-                    console.log(options)
-                    console.log(tokens)
                     if (tokens[idx].nesting === 1) {
                         const endIdx = tokens.slice(idx).findIndex(t => t.type === 'container_magic-code-group_close') + idx
                         const codeBlocks = []
