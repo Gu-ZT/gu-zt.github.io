@@ -95,37 +95,51 @@ export default defineConfig({
     markdown: {
         lineNumbers: true,
         config: (md) => {
-            md.use(container, 'magic', {
-                render(tokens: any[], idx: number) {
+            md.use(container, 'magic-code-group', {
+                render(tokens: any[], idx: number, options: any) {
+                    console.log(options)
+                    console.log(tokens)
                     if (tokens[idx].nesting === 1) {
-                        // 找到容器结束的索引
-                        const endIdx = tokens.slice(idx).findIndex(t => t.type === 'container_magic_close') + idx
-                        // 提取容器内部所有的代码块
+                        const endIdx = tokens.slice(idx).findIndex(t => t.type === 'container_magic-code-group_close') + idx
                         const codeBlocks = []
 
                         for (let i = idx + 1; i < endIdx; i++) {
                             if (tokens[i].type === 'fence') {
                                 const token = tokens[i]
-                                // 提取语言和文件名（例如 ```ts [index.ts]）
-                                const lang = token.info.split(' ')[0]
-                                const nameMatch = token.info.match(/\[(.*)\]/)
+                                const info = token.info.trim()
+
+                                // 1. 提取语言
+                                const lang = info.split(/\s+/)[0].split(':')[0]
+
+                                // 2. 提取名称 [filename]
+                                const nameMatch = info.match(/\[(.*)\]/)
                                 const name = nameMatch ? nameMatch[1] : (lang || 'code')
+
+                                // 3. 提取行号配置
+                                // 逻辑：如果有 :line-numbers 或全局配置开启，则为 true。如果有 :no-line-numbers 则为 false。
+                                const hasLineNumbers = info.includes(':line-numbers')
+                                const noLineNumbers = info.includes(':no-line-numbers')
+                                const lineStartMatch = info.match(/:line-numbers=(\d+)/)
+
+                                const lineStart = lineStartMatch ? parseInt(lineStartMatch[1]) : 1
 
                                 codeBlocks.push({
                                     name,
                                     lang,
-                                    code: token.content.trim()
+                                    code: token.content,
+                                    lineNumbers: (options.lineNumbers || hasLineNumbers) && !noLineNumbers,
+                                    lineStart: lineStart
                                 })
 
-                                // 关键：清空原本的代码块内容，防止它们被再次渲染
                                 tokens[i].type = 'html_block'
                                 tokens[i].content = ''
                             }
                         }
 
-                        // 将解析好的数据转为 JSON 字符串，作为 props 传给组件
-                        const filesJson = encodeURIComponent(JSON.stringify(codeBlocks))
-                        return `<MagicCodeGroup :files-data="'${filesJson}'">`
+                        const jsonStr = JSON.stringify(codeBlocks)
+                        const base64Data = Buffer.from(jsonStr).toString('hex')
+                        console.log(base64Data)
+                        return `<MagicCodeGroup files-data="${base64Data}">`
                     } else {
                         return '</MagicCodeGroup>'
                     }
