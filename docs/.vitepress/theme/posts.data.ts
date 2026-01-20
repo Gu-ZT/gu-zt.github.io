@@ -1,23 +1,25 @@
 // .vitepress/theme/posts.data.ts
-import { createContentLoader } from 'vitepress'
+import {createContentLoader} from 'vitepress'
 
 interface Post {
     title: string
     url: string
     date: string
+    tags: string[]
 }
 
 declare const data: Post[]
-export { data }
+export {data}
 
 export default createContentLoader('posts/**/*.md', {
     transform(raw): Post[] {
         return raw
-            .filter((data)=> !data.url.endsWith('/'))
-            .map(({ url, frontmatter }) => ({
+            .filter((data) => !data.url.endsWith('/'))
+            .map(({url, frontmatter}) => ({
                 title: frontmatter.title,
                 url,
-                date: formatDate(frontmatter.date)
+                date: formatDate(frontmatter.date),
+                tags: frontmatter.tags || []
             }))
             .sort((a, b) => +new Date(b.date) - +new Date(a.date)) // 按时间排序
     }

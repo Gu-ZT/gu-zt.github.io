@@ -30,6 +30,22 @@ function getFileTitle(filePath: string) {
     }
 }
 
+function getSidebar(filePath: string) {
+    try {
+        const content = fs.readFileSync(filePath, 'utf-8')
+        const {data} = matter(content)
+        if (data.sidebar) return data.sidebar
+        else if (data.title) return data.title
+
+        const h1Match = content.match(/^#\s+(.*)/m)
+        if (h1Match) return h1Match[1].trim()
+
+        return path.basename(filePath, '.md')
+    } catch (e) {
+        return path.basename(filePath, '.md')
+    }
+}
+
 /**
  * 自动生成导航和侧边栏
  */
@@ -60,7 +76,7 @@ function getAutoConfig() {
             .filter((f: string) => f.endsWith('.md'))
             .map((f: string) => {
                 return {
-                    text: getFileTitle(path.join(catPath, f)),
+                    text: getSidebar(path.join(catPath, f)),
                     link: `/posts/${cat}/${f.replace('.md', '')}`
                 }
             })
@@ -136,7 +152,6 @@ export default defineConfig({
 
                         const jsonStr = JSON.stringify(codeBlocks)
                         const base64Data = Buffer.from(jsonStr).toString('hex')
-                        console.log(base64Data)
                         return `<MagicCodeGroup files-data="${base64Data}">`
                     } else {
                         return '</MagicCodeGroup>'
