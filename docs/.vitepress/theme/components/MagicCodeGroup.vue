@@ -73,7 +73,7 @@ function copyCode() {
 </script>
 
 <template>
-  <div class="vp-code-group">
+  <div class="vp-code-group VPDoc magic-code-group">
     <div class="tabs">
       <template v-for="(file, index) in files" :key="index">
         <input type="radio" :name="`group-${filesData.length}`" :id="`tab-${index}`" :checked="activeIndex === index">
@@ -104,9 +104,13 @@ function copyCode() {
 </template>
 
 <style scoped>
+.magic-code-group {
+  position: relative;
+}
+
 .magic-code-blocks {
   display: block;
-  position: absolute;
+  position: relative;
   width: 100%;
   background-color: var(--vp-code-block-bg);
   border-radius: 8px;
