@@ -20,20 +20,20 @@ Magic Code Group 是一个为 VitePress 博客定制的代码展示组件，它�
 
 通过 `markdown-it-container` 插件，扩展了 Markdown 语法，支持 `:::magic-code-group` 容器：
 
-```markdown
-    :::magic-code-group
+````markdown
+:::magic-code-group
 
-    ```ts [main.ts]
-    console.log('Hello World')
-    ```
-    
-    ```js [utils.js]
-    function add(a, b) {
-      return a + b
-    }
-    ```
-    :::
+```ts [main.ts]
+console.log('Hello World')
 ```
+
+```js [utils.js]
+function add(a, b) {
+  return a + b
+}
+```
+:::
+````
 
 ### 2. 配置解析（config.mts）
 
@@ -112,24 +112,24 @@ function decodeHex(hex) {
 
 ### 基础用法
 
-```markdown
-    :::magic-code-group
-    
-    ```typescript [config.ts]
-    export default {
-      title: 'My App',
-      version: '1.0.0'
-    }
-    ```
-    
-    ```javascript [index.js]
-    import config from './config'
-    
-    console.log(config.title)
-    ```
-    
-    :::
+````markdown
+:::magic-code-group
+
+```typescript [config.ts]
+export default {
+  title: 'My App',
+  version: '1.0.0'
+}
 ```
+
+```javascript [index.js]
+import config from './config'
+
+console.log(config.title)
+```
+
+:::
+````
 
 :::magic-code-group
 
@@ -148,24 +148,24 @@ console.log(config.title)
 
 :::
 
-```markdown
-    :::code-group
-    
-    ```typescript [config.ts]
-    export default {
-      title: 'My App',
-      version: '1.0.0'
-    }
-    ```
-    
-    ```javascript [index.js]
-    import config from './config'
-    
-    console.log(config.title)
-    ```
-    
-    :::
+````markdown
+:::code-group
+
+```typescript [config.ts]
+export default {
+  title: 'My App',
+  version: '1.0.0'
+}
 ```
+
+```javascript [index.js]
+import config from './config'
+
+console.log(config.title)
+```
+
+:::
+````
 
 :::code-group
 
@@ -186,21 +186,21 @@ console.log(config.title)
 
 ### 带行号
 
-```markdown
-    :::magic-code-group
-    
-    ```ts:line-numbers=10 [utils.ts]
-    function calculate(x: number, y: number) {
-      return x + y
-    }
-    ```
-    
-    ```js:no-line-numbers [simple.js]
-    console.log('No line numbers')
-    ```
-    
-    :::
+````markdown
+:::magic-code-group
+
+```ts:line-numbers=10 [utils.ts]
+function calculate(x: number, y: number) {
+  return x + y
+}
 ```
+
+```js:no-line-numbers [simple.js]
+console.log('No line numbers')
+```
+
+:::
+````
 
 :::magic-code-group
 
@@ -216,21 +216,21 @@ console.log('No line numbers')
 
 :::
 
-```markdown
-    :::code-group
-    
-    ```ts:line-numbers=10 [utils.ts]
-    function calculate(x: number, y: number) {
-      return x + y
-    }
-    ```
-    
-    ```js:no-line-numbers [simple.js]
-    console.log('No line numbers')
-    ```
-    
-    :::
+````markdown
+:::code-group
+
+```ts:line-numbers=10 [utils.ts]
+function calculate(x: number, y: number) {
+  return x + y
+}
 ```
+
+```js:no-line-numbers [simple.js]
+console.log('No line numbers')
+```
+
+:::
+````
 
 :::code-group
 
