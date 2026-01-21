@@ -18,7 +18,7 @@ function click() {
 </script>
 
 <template>
-  <div class="post-item" @click="click">
+  <div class="post-card" @click="click">
     <div class="title">{{ props.title }}</div>
     <span class="date">
       <clock-icon class="custom-icon"/>
@@ -34,13 +34,13 @@ function click() {
 </template>
 
 <style scoped>
-.post-item {
+.post-card {
   gap: 1rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 1rem;
-  background-color: rgba(var(--vp-c-bg), 0.1);
+  background-color: rgba(var(--vp-c-bg));
   border: 1px solid var(--vp-c-border);
   color: var(--vp-code-color);
   padding: 1rem;
@@ -48,13 +48,14 @@ function click() {
   box-shadow: 0 2px 4px rgba(var(--vp-c-bg), 0.1);
   transition: transform 0.2s ease-in-out;
   backdrop-filter: blur(6px);
+  position: relative;
 }
 
-.post-item:hover {
+.post-card:hover {
   transform: scale(1.05);
 }
 
-.post-item:hover .title {
+.post-card:hover .title {
   text-decoration: underline;
 }
 
