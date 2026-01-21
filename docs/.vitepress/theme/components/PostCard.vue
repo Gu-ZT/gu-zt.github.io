@@ -1,6 +1,6 @@
 <script setup>
-
-import TagIcon from './TagIcon.vue';
+import TagIcon from './icons/TagIcon.vue';
+import ClockIcon from './icons/ClockIcon.vue';
 
 const props = defineProps({
   title: String,
@@ -20,9 +20,12 @@ function click() {
 <template>
   <div class="post-item" @click="click">
     <div class="title">{{ props.title }}</div>
-    <span class="date">日期：{{ props.date }}</span>
+    <span class="date">
+      <clock-icon class="custom-icon"/>
+      {{ props.date }}
+    </span>
     <div class="tags">
-      <tag-icon class="tag-icon" />
+      <tag-icon class="custom-icon"/>
       <div class="tag-list">
         <span v-for="tag in props.tags" class="tag">{{ tag }}</span>
       </div>
@@ -71,7 +74,7 @@ function click() {
   overflow: hidden;
 }
 
-.tag-icon {
+.custom-icon {
   color: var(--vp-c-text-3);
 }
 

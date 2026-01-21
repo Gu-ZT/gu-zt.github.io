@@ -1,0 +1,25 @@
+<script setup>
+
+</script>
+
+<template>
+  <svg class="clock-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543
+        4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="currentColor" stroke-width="4"
+        stroke-linejoin="round"/>
+    <path d="M24.0084 12.0001L24.0072 24.0089L32.4866 32.4883" stroke="currentColor" stroke-width="4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</template>
+
+<style scoped>
+.clock-icon {
+  margin: 0.2rem;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  color: var(--vp-c-text-2);
+}
+</style>
