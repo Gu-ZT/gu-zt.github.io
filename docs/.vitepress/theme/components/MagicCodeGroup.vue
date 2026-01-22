@@ -42,14 +42,12 @@ const files: Ref<CodeFileData[]> = computed(() => {
 const supportLanguages = Object.keys(bundledLanguages);
 
 function handleFileData(file: CodeFileData) {
-  console.log(file)
   handleFileLang(file);
   if (!supportLanguages.includes(file.lang)) {
     file.lang = 'plaintext';
   }
   file.name = file.name || file.lang
   handleFileCode(file);
-  console.log(file)
 }
 
 const singleLineRegex = `(\\d+)`
