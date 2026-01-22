@@ -279,6 +279,8 @@ function checkTab(index: number) {
   line-height: var(--vp-code-line-height);
   font-size: var(--vp-code-font-size);
   transition-duration: 0.4s;
+  user-select: none;
+  pointer-events: none;
 }
 
 .has-line-numbers .custom-lines {
