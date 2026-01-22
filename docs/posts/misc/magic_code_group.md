@@ -272,6 +272,7 @@ graph LR
 ## 待实现
 
 ### <CheckBox/> 在代码块中实现行高亮
+````markdown
 :::code-group
 ```js{4}
 export default {
@@ -283,7 +284,56 @@ export default {
 }
 ```
 :::
+````
+:::code-group
+```js{4}
+export default {
+  data () {
+    return {
+      msg: 'Highlighted!'
+    }
+  }
+}
+```
+:::
+````markdown
+:::magic-code-group
+```js{4}
+export default {
+  data () {
+    return {
+      msg: 'Highlighted!'
+    }
+  }
+}
+```
+:::
+````
+:::magic-code-group
+```js{4}
+export default {
+  data () {
+    return {
+      msg: 'Highlighted!'
+    }
+  }
+}
+```
+:::
 ### <CheckBox/> 代码块中聚焦
+````markdown
+:::code-group
+```js
+export default {
+  data () {
+    return {
+      msg: 'Focused!' // [!!code focus]
+    }
+  }
+}
+```
+:::
+````
 :::code-group
 ```js
 export default {
@@ -295,7 +345,46 @@ export default {
 }
 ```
 :::
+````markdown
+:::magic-code-group
+```js
+export default {
+  data () {
+    return {
+      msg: 'Focused!' // [!!code focus]
+    }
+  }
+}
+```
+:::
+````
+
+:::magic-code-group
+```js
+export default {
+  data () {
+    return {
+      msg: 'Focused!' // [!code focus]
+    }
+  }
+}
+```
+:::
 ### <CheckBox/> 代码块中的颜色差异
+````markdown
+:::code-group
+```js
+export default {
+  data () {
+    return {
+      msg: 'Removed' // [!!code --]
+      msg: 'Added' // [!!code ++]
+    }
+  }
+}
+```
+:::
+````
 :::code-group
 ```js
 export default {
@@ -308,8 +397,74 @@ export default {
 }
 ```
 :::
+````markdown
+:::magic-code-group
+```js
+export default {
+  data () {
+    return {
+      msg: 'Removed' // [!!code --]
+      msg: 'Added' // [!!code ++]
+    }
+  }
+}
+```
+:::
+````
+:::magic-code-group
+```js
+export default {
+  data () {
+    return {
+      msg: 'Removed' // [!code --]
+      msg: 'Added' // [!code ++]
+    }
+  }
+}
+```
+:::
 ### <CheckBox/> 高亮“错误”和“警告”
+````markdown
 :::code-group
+```js
+export default {
+  data () {
+    return {
+      msg: 'Error', // [!!code error]
+      msg: 'Warning' // [!!code warning]
+    }
+  }
+}
+```
+:::
+````
+:::code-group
+```js
+export default {
+  data () {
+    return {
+      msg: 'Error', // [!code error]
+      msg: 'Warning' // [!code warning]
+    }
+  }
+}
+```
+:::
+````markdown
+:::magic-code-group
+```js
+export default {
+  data () {
+    return {
+      msg: 'Error', // [!!code error]
+      msg: 'Warning' // [!!code warning]
+    }
+  }
+}
+```
+:::
+````
+:::magic-code-group
 ```js
 export default {
   data () {
