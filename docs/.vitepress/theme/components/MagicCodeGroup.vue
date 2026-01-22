@@ -158,20 +158,18 @@ function copyCode() {
   }, 2000);
 }
 
-const loading = ref(true);
-
-function start() {
-  loading.value = true;
-}
-
-function end() {
-  loading.value = false;
-}
+const loading = ref(false);
+const timeout = ref()
 
 function checkTab(index: number) {
   if (index !== activeIndex.value) {
     loading.value = true;
     activeIndex.value = index
+    if (timeout.value) clearTimeout(timeout.value);
+    timeout.value = setTimeout(() => {
+      loading.value = false;
+      timeout.value = undefined;
+    }, 600);
   }
 }
 
@@ -204,8 +202,6 @@ function checkTab(index: number) {
           :lang="files[activeIndex].lang"
           :code="files[activeIndex].code.trimEnd()"
           :options="{ duration: 600, containerStyle: false }"
-          @start="start"
-          @end="end"
       />
       <div class="custom-lines">
         <div
