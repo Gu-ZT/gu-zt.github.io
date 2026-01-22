@@ -343,9 +343,14 @@ function checkTab(index: number) {
 .magic-code-blocks {
   display: block;
   position: relative;
-  width: 100%;
   background-color: var(--vp-code-block-bg);
-  border-radius: 8px;
+  border-radius: 0 0 8px 8px;
+}
+
+@media (max-width: 640px) {
+  .vp-doc div[class*='magic-code-blocks'] {
+    margin: 0 -24px;
+  }
 }
 
 .magic-line-numbers-wrapper {
