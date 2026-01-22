@@ -121,11 +121,15 @@ export default defineConfig({
                         for (let i = idx + 1; i < endIdx; i++) {
                             if (tokens[i].type === 'fence') {
                                 const token = tokens[i]
-                                const info = token.info.trim()
+                                let info = token.info.trim()
 
                                 // 1. 提取名称 [filename]
                                 const nameMatch = info.match(/\[(.*)\]/)
                                 const name = nameMatch ? nameMatch[1] : ''
+
+                                if (nameMatch) {
+                                    info = info.replace(nameMatch[0], '')
+                                }
 
                                 // 2. 提取行号配置
                                 // 逻辑：如果有 :line-numbers 或全局配置开启，则为 true。如果有 :no-line-numbers 则为 false。
@@ -147,6 +151,8 @@ export default defineConfig({
                                     lang = lang.replace(/:line-numbers/, '')
                                 }
                                 lang = lang.replace(/\s+/, '')
+
+                                console.log(lang)
 
                                 codeBlocks.push({
                                     name,
