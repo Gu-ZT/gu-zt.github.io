@@ -7,6 +7,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 // @ts-ignore
 import matter from 'gray-matter'
+import {CodeFileData} from "./theme/type";
 
 // 配置根目录
 const postsPath = path.resolve(__dirname, '../posts')
@@ -115,7 +116,7 @@ export default defineConfig({
                 render(tokens: any[], idx: number, options: any) {
                     if (tokens[idx].nesting === 1) {
                         const endIdx = tokens.slice(idx).findIndex(t => t.type === 'container_magic-code-group_close') + idx
-                        const codeBlocks = []
+                        const codeBlocks: CodeFileData[] = []
 
                         for (let i = idx + 1; i < endIdx; i++) {
                             if (tokens[i].type === 'fence') {
@@ -127,7 +128,7 @@ export default defineConfig({
 
                                 // 2. 提取名称 [filename]
                                 const nameMatch = info.match(/\[(.*)\]/)
-                                const name = nameMatch ? nameMatch[1] : (lang || 'code')
+                                const name = nameMatch ? nameMatch[1] : ''
 
                                 // 3. 提取行号配置
                                 // 逻辑：如果有 :line-numbers 或全局配置开启，则为 true。如果有 :no-line-numbers 则为 false。

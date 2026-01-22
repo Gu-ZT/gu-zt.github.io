@@ -1,8 +1,9 @@
-<script setup>
-import {computed, onMounted, ref} from 'vue';
-import {createHighlighter} from 'shiki';
+<script setup lang="ts">
+import {computed, onMounted, Ref, ref} from 'vue';
+import {bundledLanguages, createHighlighter} from 'shiki';
 import {ShikiMagicMove} from 'shiki-magic-move/vue';
 import {useData} from 'vitepress';
+import {CodeFileData} from "../type";
 
 const props = defineProps({
   filesData: String
@@ -10,12 +11,12 @@ const props = defineProps({
 
 const {isDark} = useData();
 
-function decodeHex(hex) {
+function decodeHex(hex: string) {
   if (!hex) return '';
   try {
     const bytes = new Uint8Array(hex.length / 2);
     for (let i = 0; i < hex.length; i += 2) {
-      bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+      bytes[i / 2] = parseInt(hex.substring(i, i + 2), 16);
     }
     return new TextDecoder('utf-8').decode(bytes);
   } catch (e) {
@@ -24,17 +25,105 @@ function decodeHex(hex) {
   }
 }
 
-const files = computed(() => {
+const files: Ref<CodeFileData[]> = computed(() => {
   if (!props.filesData) return [];
   const decode = decodeHex(props.filesData);
   if (!decode) return [];
   try {
-    return JSON.parse(decode);
+    const temp = JSON.parse(decode);
+    temp.forEach(handleFileData);
+    return temp;
   } catch (e) {
     console.error('Failed to parse files-data:', e);
     return [];
   }
 });
+
+const supportLanguages = Object.keys(bundledLanguages);
+
+function handleFileData(file: CodeFileData) {
+  console.log(file)
+  handleFileLang(file);
+  if (!supportLanguages.includes(file.lang)) {
+    file.lang = 'plaintext';
+  }
+  file.name = file.name || file.lang
+  handleFileCode(file);
+  console.log(file)
+}
+
+const singleLineRegex = `(\\d+)`
+const multiLineRegex = `(\\d+-\\d+)`
+const lineRegex = `(${singleLineRegex}|${multiLineRegex})`
+const highlightLinesRegex = `\\{${lineRegex}(,?${lineRegex})*}`;
+
+function handleFileLang(file: CodeFileData) {
+  const matches = file.lang.match(highlightLinesRegex);
+  if (matches) {
+    file.lang = file.lang.replace(matches[0], '');
+    handleFileHighlight(file, matches[0]);
+  }
+}
+
+function handleFileHighlight(file: CodeFileData, highlightLines: string) {
+  file.highlightLines = [];
+  highlightLines.substring(1, highlightLines.length - 1).split(',').forEach(range => {
+    if (range.match(`^${singleLineRegex}$`)) {
+      file.highlightLines.push(parseInt(range));
+    } else if (range.match(`^${multiLineRegex}$`)) {
+      const [start, end] = range.split('-').map(Number);
+      for (let i = start; i <= end; i++) {
+        file.highlightLines.push(i);
+      }
+    }
+  });
+}
+
+function handleFileCode(file: CodeFileData) {
+  file.diffAddLines = []
+  file.diffReduceLines = []
+  file.warningLines = []
+  file.errorLines = []
+  file.focusedLines = []
+  const codes = file.code.split('\n').map((line, index) => handleCodeLine(file, index, line));
+  file.code = codes.join('\n');
+}
+
+const commentRegex = '(//|#)'
+const codeAddRegex = '(\\[!code \\+\\+])';
+const codeReduceRegex = '(\\[!code --])';
+const codeWarningRegex = '(\\[!code warning])';
+const codeErrorRegex = '(\\[!code error])';
+const codeFocusRegex = '(\\[!code focus])';
+
+function handleCodeLine(file: CodeFileData, lineNum: number, line: string): string {
+  const addMatches = line.match(`${commentRegex} ${codeAddRegex}`)
+  if (addMatches) {
+    file.diffAddLines.push(lineNum);
+    return line.replace(addMatches[0], '');
+  }
+  const reduceMatches = line.match(`${commentRegex} ${codeReduceRegex}`)
+  if (reduceMatches) {
+    file.diffReduceLines.push(lineNum);
+    return line.replace(reduceMatches[0], '');
+  }
+  const warningMatches = line.match(`${commentRegex} ${codeWarningRegex}`)
+  if (warningMatches) {
+    file.warningLines.push(lineNum);
+    return line.replace(warningMatches[0], '');
+  }
+  const errorMatches = line.match(`${commentRegex} ${codeErrorRegex}`)
+  if (errorMatches) {
+    file.errorLines.push(lineNum);
+    return line.replace(errorMatches[0], '');
+  }
+  const focusMatches = line.match(`${commentRegex} ${codeFocusRegex}`)
+  if (focusMatches) {
+    file.focusedLines.push(lineNum);
+    return line.replace(focusMatches[0], '');
+  }
+  return line;
+}
 
 const activeIndex = ref(0);
 const highlighter = ref(null);
@@ -54,7 +143,7 @@ const lineNumbers = computed(() => {
 onMounted(async () => {
   if (files.value.length === 0) return;
 
-  const langs = [...new Set(files.value.map(f => f.lang || 'ts'))];
+  const langs = files.value.map(f => f.lang || 'ts');
   highlighter.value = await createHighlighter({
     themes: ['github-dark', 'github-light'],
     langs: langs
