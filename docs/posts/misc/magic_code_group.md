@@ -271,7 +271,53 @@ graph LR
 
 ## 待实现
 
-### <CheckBox/> 在代码块中实现行高亮
+### 概览
+
+:::magic-code-group
+```js{4} [Highlight]
+export default {
+  data () {
+    return {
+      msg: 'Highlighted!'
+    }
+  }
+}
+```
+
+```js [Focus]
+export default {
+  data () {
+    return {
+      msg: 'Focused!' // [!code focus]
+    }
+  }
+}
+```
+
+```js [Diff]
+export default {
+  data () {
+    return {
+      msg: 'Removed' // [!code --]
+      msg: 'Added' // [!code ++]
+    }
+  }
+}
+```
+
+```js [Error|Warning]
+export default {
+  data () {
+    return {
+      msg: 'Error', // [!code error]
+      msg: 'Warning' // [!code warning]
+    }
+  }
+}
+```
+:::
+
+### <CheckBox checked/> 在代码块中实现行高亮
 ````markdown
 :::code-group
 ```js{4}
@@ -320,7 +366,7 @@ export default {
 }
 ```
 :::
-### <CheckBox/> 代码块中聚焦
+### <CheckBox checked/> 代码块中聚焦
 ````markdown
 :::code-group
 ```js
@@ -370,7 +416,7 @@ export default {
 }
 ```
 :::
-### <CheckBox/> 代码块中的颜色差异
+### <CheckBox checked/> 代码块中的颜色差异
 ````markdown
 :::code-group
 ```js
@@ -423,7 +469,7 @@ export default {
 }
 ```
 :::
-### <CheckBox/> 高亮“错误”和“警告”
+### <CheckBox checked/> 高亮“错误”和“警告”
 ````markdown
 :::code-group
 ```js

@@ -141,6 +141,7 @@ export default defineConfig({
                                 codeBlocks.push({
                                     name,
                                     lang,
+                                    lines: token.lines,
                                     code: token.content,
                                     lineNumbers: (options.lineNumbers || hasLineNumbers) && !noLineNumbers,
                                     lineStart: lineStart

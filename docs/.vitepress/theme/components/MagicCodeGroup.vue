@@ -67,11 +67,11 @@ function handleFileHighlight(file: CodeFileData, highlightLines: string) {
   file.highlightLines = [];
   highlightLines.substring(1, highlightLines.length - 1).split(',').forEach(range => {
     if (range.match(`^${singleLineRegex}$`)) {
-      file.highlightLines.push(parseInt(range));
+      file.highlightLines.push(parseInt(range) - 1);
     } else if (range.match(`^${multiLineRegex}$`)) {
       const [start, end] = range.split('-').map(Number);
       for (let i = start; i <= end; i++) {
-        file.highlightLines.push(i);
+        file.highlightLines.push(i - 1);
       }
     }
   });
@@ -157,6 +157,24 @@ function copyCode() {
     copied.value = false;
   }, 2000);
 }
+
+const loading = ref(true);
+
+function start() {
+  loading.value = true;
+}
+
+function end() {
+  loading.value = false;
+}
+
+function checkTab(index: number) {
+  if (index !== activeIndex.value) {
+    loading.value = true;
+    activeIndex.value = index
+  }
+}
+
 </script>
 
 <template>
@@ -164,7 +182,7 @@ function copyCode() {
     <div class="tabs">
       <template v-for="(file, index) in files" :key="index">
         <input type="radio" :name="`group-${filesData.length}`" :id="`tab-${index}`" :checked="activeIndex === index">
-        <label @click="activeIndex = index">{{ file.name }}</label>
+        <label @click="checkTab(index)">{{ file.name }}</label>
       </template>
     </div>
 
@@ -179,18 +197,140 @@ function copyCode() {
       </div>
       <ShikiMagicMove
           :class="{'shiki-magic-move-container':true, 'has-line-numbers': lineNumbers.length > 0 }"
+          id="shiki-magic-move"
           v-if="highlighter"
           :highlighter="highlighter"
           :theme="currentTheme"
           :lang="files[activeIndex].lang"
           :code="files[activeIndex].code.trimEnd()"
           :options="{ duration: 600, containerStyle: false }"
+          @start="start"
+          @end="end"
       />
+      <div class="custom-lines">
+        <div
+            v-for="line in files[activeIndex].highlightLines"
+            :key="line"
+            :class="{'custom-line-hidden':loading, 'custom-line':true, 'custom-highlighted':true}"
+            :style="`transform: translateY(${line*100}%)`"
+        >
+          highlightLine
+        </div>
+        <div
+            v-for="line in files[activeIndex].diffAddLines"
+            :key="line"
+            :class="{'custom-line-hidden':loading, 'custom-line':true, 'custom-diff-add':true}"
+            :style="`transform: translateY(${line*100}%)`"
+        />
+        <div
+            v-for="line in files[activeIndex].diffReduceLines"
+            :key="line"
+            :class="{'custom-line-hidden':loading, 'custom-line':true, 'custom-diff-reduce':true}"
+            :style="`transform: translateY(${line*100}%)`"
+        />
+        <div
+            v-for="line in files[activeIndex].warningLines"
+            :key="line"
+            :class="{'custom-line-hidden':loading, 'custom-line':true, 'custom-warning':true}"
+            :style="`transform: translateY(${line*100}%)`"
+        >
+          warningLine
+        </div>
+        <div
+            v-for="line in files[activeIndex].errorLines"
+            :key="line"
+            :class="{'custom-line-hidden':loading, 'custom-line':true, 'custom-error':true}"
+            :style="`transform: translateY(${line*100}%)`"
+        >
+          errorLine
+        </div>
+        <div
+            v-if="files[activeIndex].focusedLines.length"
+            v-for="(_, index) in files[activeIndex].code.split('\n')"
+            :key="index"
+            :class="{
+                'custom-line-hidden':loading,
+                'custom-line':true,
+                'custom-focused':files[activeIndex].focusedLines.includes(index),
+                'custom-unfocused':!files[activeIndex].focusedLines.includes(index)
+              }"
+            :style="`transform: translateY(${index*100}%)`"
+        >
+          focusedLine
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.custom-lines {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-top: 20px;
+  margin-left: 32px;
+  width: calc(100% - 32px);
+}
+
+.custom-line {
+  opacity: 1;
+  color: #00000000;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  line-height: var(--vp-code-line-height);
+  font-size: var(--vp-code-font-size);
+  transition-duration: 0.4s;
+}
+
+.custom-line.custom-line-hidden {
+  opacity: 0;
+}
+
+.custom-diff-add {
+  color: var(--vp-code-line-diff-add-symbol-color);
+  background-color: var(--vp-code-line-diff-add-color);
+}
+
+.custom-diff-add::before {
+  content: "+";
+  left: 10px;
+  position: relative;
+}
+
+.custom-diff-reduce {
+  color: var(--vp-code-line-diff-remove-symbol-color);
+  background-color: var(--vp-code-line-diff-remove-color);
+}
+
+.custom-diff-reduce::before {
+  content: "-";
+  left: 10px;
+  position: relative;
+}
+
+.custom-highlighted {
+  background-color: var(--vp-code-line-highlight-color);
+}
+
+.custom-warning {
+  background-color: var(--vp-code-line-warning-color);
+}
+
+.custom-error {
+  background-color: var(--vp-code-line-error-color);
+}
+
+.custom-unfocused {
+  backdrop-filter: blur(2px);
+}
+
+.magic-code-blocks:hover .custom-unfocused {
+  opacity: 0;
+}
+
 .magic-code-group {
   position: relative;
 }
@@ -230,13 +370,14 @@ function copyCode() {
 
 :deep(.shiki-magic-move-container.has-line-numbers) {
   padding-left: 60px;
+  z-index: 1;
 }
 
 span.lang {
   position: absolute;
   top: 2px;
   right: 8px;
-  z-index: 2;
+  z-index: 3;
   font-size: 12px;
   font-weight: 500;
   user-select: none;
@@ -249,7 +390,7 @@ button.copy {
   position: absolute;
   top: 12px;
   right: 12px;
-  z-index: 3;
+  z-index: 4;
   border: 1px solid var(--vp-code-copy-code-border-color);
   border-radius: 4px;
   width: 40px;

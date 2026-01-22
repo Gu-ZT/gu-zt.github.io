@@ -1,5 +1,6 @@
 export interface CodeFileData {
     code: string;
+    lines: number;
     lang: string;
     lineNumbers: boolean;
     lineStart: number;
