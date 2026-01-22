@@ -284,7 +284,27 @@ export default {
 }
 ```
 
+```js:no-line-numbers {4} [Highlight]
+export default {
+  data () {
+    return {
+      msg: 'Highlighted!'
+    }
+  }
+}
+```
+
 ```js [Focus]
+export default {
+  data () {
+    return {
+      msg: 'Focused!' // [!code focus]
+    }
+  }
+}
+```
+
+```js:no-line-numbers [Focus]
 export default {
   data () {
     return {
@@ -305,7 +325,29 @@ export default {
 }
 ```
 
+```js:no-line-numbers [Diff]
+export default {
+  data () {
+    return {
+      msg: 'Removed' // [!code --]
+      msg: 'Added' // [!code ++]
+    }
+  }
+}
+```
+
 ```js [Error|Warning]
+export default {
+  data () {
+    return {
+      msg: 'Error', // [!code error]
+      msg: 'Warning' // [!code warning]
+    }
+  }
+}
+```
+
+```js:no-line-numbers [Error|Warning]
 export default {
   data () {
     return {

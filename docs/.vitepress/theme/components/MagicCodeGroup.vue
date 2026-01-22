@@ -269,8 +269,8 @@ function checkTab(index: number) {
   left: 0;
   top: 0;
   margin-top: 20px;
-  margin-left: 32px;
-  width: calc(100% - 32px);
+  margin-left: 0;
+  width: 100%;
 }
 
 .custom-line {
@@ -283,6 +283,11 @@ function checkTab(index: number) {
   line-height: var(--vp-code-line-height);
   font-size: var(--vp-code-font-size);
   transition-duration: 0.4s;
+}
+
+.has-line-numbers .custom-lines {
+  margin-left: 32px;
+  width: calc(100% - 32px);
 }
 
 .custom-line.custom-line-hidden {

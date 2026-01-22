@@ -123,20 +123,30 @@ export default defineConfig({
                                 const token = tokens[i]
                                 const info = token.info.trim()
 
-                                // 1. 提取语言
-                                const lang = info.split(/\s+/)[0].split(':')[0]
-
-                                // 2. 提取名称 [filename]
+                                // 1. 提取名称 [filename]
                                 const nameMatch = info.match(/\[(.*)\]/)
                                 const name = nameMatch ? nameMatch[1] : ''
 
-                                // 3. 提取行号配置
+                                // 2. 提取行号配置
                                 // 逻辑：如果有 :line-numbers 或全局配置开启，则为 true。如果有 :no-line-numbers 则为 false。
                                 const hasLineNumbers = info.includes(':line-numbers')
                                 const noLineNumbers = info.includes(':no-line-numbers')
                                 const lineStartMatch = info.match(/:line-numbers=(\d+)/)
 
                                 const lineStart = lineStartMatch ? parseInt(lineStartMatch[1]) : 1
+
+                                // 3. 提取语言
+                                const infos = info.split(/\s+/);
+                                let lang = infos.length <= 1 ? infos[0] : infos.slice(0, infos.length - 1).join('')
+
+                                if (lineStartMatch) {
+                                    lang = lang.replace(lineStartMatch[0], '')
+                                } else if (noLineNumbers) {
+                                    lang = lang.replace(/:no-line-numbers/, '')
+                                } else if (hasLineNumbers) {
+                                    lang = lang.replace(/:line-numbers/, '')
+                                }
+                                lang = lang.replace(/\s+/, '')
 
                                 codeBlocks.push({
                                     name,
