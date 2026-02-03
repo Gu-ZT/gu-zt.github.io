@@ -1,7 +1,7 @@
 ---
 title: 【编程基础】06.平行时空的管理者-git
 sidebar: 06.Git
-date: 2026-02-08
+date: 2026-02-03
 tags: [ Git, GitHub, 版本控制, 开源, 团队协作 ]
 ---
 
