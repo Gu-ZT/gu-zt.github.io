@@ -23,7 +23,7 @@ onMounted(() => {
       <div class="custom-footer">
         <p>Released under the CC BY-NC-SA 4.0 License.</p>
         <p>Copyright © 2025-present Gugle</p>
-        <p v-if="showRecordNum">
+        <div v-if="showRecordNum">
           <p class="record-num">
             陕ICP备2024046977号
           </p>
@@ -37,7 +37,7 @@ onMounted(() => {
               陕公网安备61072402000171号
             </a>
           </p>
-        </p>
+        </div>
       </div>
     </template>
   </Layout>
