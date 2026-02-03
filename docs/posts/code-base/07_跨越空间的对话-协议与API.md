@@ -47,7 +47,7 @@ API 是开发者留给你的“说明书”，它告诉你：**给我什么参�
 // 使用 HttpClient 叩响“天气办事处”的窗口
 String response = httpClient.get("https://api.weather.com/v1/beijing");
 
-System.out.println("收到天气数据！");
+IO.println("收到天气数据！");
 ```
 
 :::
