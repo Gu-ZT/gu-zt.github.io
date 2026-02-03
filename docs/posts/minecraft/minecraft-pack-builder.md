@@ -60,7 +60,7 @@ tags: [ Minecraft资源包构建, Minecraft数据包构建, 模块化架构, 版
 - XeKr的方纹资源包
     - [[主站](https://build.xekr.dev/#/XeKr/Squareful) | [镜像站](https://build.ztxy666.cn/#/XeKr/Squareful)]
 - 森罗物语：装饰
-    - [[主站：装饰](https://build.xekr.dev/#/KaleidoscopeMods/KaleidoscopeDeco) | [镜像站：装饰](https://build.ztxy666.cn/#/KaleidoscopeMods/KaleidoscopeDeco)]
+    - [[主站](https://build.xekr.dev/#/KaleidoscopeMods/KaleidoscopeDeco) | [镜像站](https://build.ztxy666.cn/#/KaleidoscopeMods/KaleidoscopeDeco)]
 
 ## 一、引言
 
