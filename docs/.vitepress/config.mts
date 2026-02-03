@@ -152,8 +152,6 @@ export default defineConfig({
                                 }
                                 lang = lang.replace(/\s+/, '')
 
-                                console.log(lang)
-
                                 codeBlocks.push({
                                     name,
                                     lang,
