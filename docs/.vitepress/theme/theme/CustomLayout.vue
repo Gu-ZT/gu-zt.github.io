@@ -11,7 +11,8 @@ function getBaseUrl(str) {
 }
 
 onMounted(() => {
-  if (getBaseUrl(window.location.href).includes('ztxy666.cn')) {
+  const baseUrl = getBaseUrl(window.location.href);
+  if (baseUrl.includes('ztxy666.cn') || baseUrl.includes('localhost')) {
     showRecordNum.value = true;
   }
 });
