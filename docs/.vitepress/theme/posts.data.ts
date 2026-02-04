@@ -21,7 +21,11 @@ export default createContentLoader('posts/**/*.md', {
                 date: formatDate(frontmatter.date),
                 tags: frontmatter.tags || []
             }))
-            .sort((a, b) => +new Date(b.date) - +new Date(a.date)) // 按时间排序
+            .sort((a, b) => {
+                const dateSort = +new Date(b.date) - +new Date(a.date) // 按时间排序
+                if (dateSort !== 0) return dateSort;
+                return -a.title.localeCompare(b.title); // 按标题排序
+            })
     }
 })
 
