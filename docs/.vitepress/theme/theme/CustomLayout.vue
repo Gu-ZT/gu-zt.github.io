@@ -11,7 +11,7 @@ function getBaseUrl(str) {
 }
 
 onMounted(() => {
-  if(getBaseUrl(window.location.href).includes('ztxy666.cn')) {
+  if (getBaseUrl(window.location.href).includes('ztxy666.cn')) {
     showRecordNum.value = true;
   }
 });
@@ -68,6 +68,7 @@ onMounted(() => {
   .record-num {
     display: block;
   }
+
   .record-num-split {
     display: none;
   }

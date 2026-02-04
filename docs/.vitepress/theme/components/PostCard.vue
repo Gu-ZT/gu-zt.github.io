@@ -35,13 +35,14 @@ function click() {
 
 <style scoped>
 .post-card {
+  --electric-border-color: #66ccff;
   gap: 1rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 1rem;
   background-color: rgba(var(--vp-c-bg));
-  border: 1px solid var(--vp-c-border);
+  border: 2px solid oklch(from var(--electric-border-color) l c h / 0.5);
   color: var(--vp-code-color);
   padding: 1rem;
   border-radius: 0.5rem;
@@ -49,6 +50,24 @@ function click() {
   transition: transform 0.2s ease-in-out;
   backdrop-filter: blur(6px);
   position: relative;
+}
+
+.post-card::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 1px solid var(--electric-border-color);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.post-card:hover::after {
+  opacity: 1;
+  margin-top: -5px;
+  margin-left: -5px;
+  filter: url("#turbulent-displace");
 }
 
 .post-card:hover {
